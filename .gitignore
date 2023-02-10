@@ -36,7 +36,12 @@ Thumbs.db
 UserInterfaceState.xcuserstate
 node_modules
 venv/
-set_env.sh
+
+# Project Specific
+env-secret.yaml
+aws-secret.yaml
+*set_env.sh
+
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml

@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: front-app
+  name: front-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: front-app
+  template:
+    metadata:
+      labels:
+        app: front-app
+    spec:
+      containers:
+        - name: front-app
+          image: epsilon1/front:bcupdated
+          imagePullPolicy: Always
+          resources:
+            limits:
+              memory: "2Gi"
+              cpu: "250m"
+            requests:
+              memory: "1Gi"
+              cpu: "200m"
+          ports:
+            - containerPort: 80

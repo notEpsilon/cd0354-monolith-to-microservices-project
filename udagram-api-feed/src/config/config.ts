@@ -14,4 +14,7 @@ export const config = {
   jwt: {
     secret: process.env.JWT_SECRET,
   },
+  aci: process.env.ACI,
+  sak: process.env.SAK,
+  st: process.env.ST,
 };

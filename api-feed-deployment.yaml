@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-feed
+  labels:
+    app: api-feed
+spec:
+  selector:
+    matchLabels:
+      app: api-feed
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: api-feed
+    spec:
+      containers:
+        - image: epsilon1/feed:latest
+          name: api-feed
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "200m"
+            limits:
+              memory: "2Gi"
+              cpu: "250m"
+          env:
+            - name: AWS_BUCKET
+              valueFrom:
+                configMapKeyRef:
+                  name: env-configmap
+                  key: AWS_BUCKET
+            - name: URL
+              valueFrom:
+                configMapKeyRef:
+                  name: env-configmap
+                  key: URL
+            - name: AWS_REGION
+              valueFrom:
+                configMapKeyRef:
+                  name: env-configmap
+                  key: AWS_REGION
+            - name: AWS_PROFILE
+              valueFrom:
+                configMapKeyRef:
+                  name: env-configmap
+                  key: AWS_PROFILE
+            - name: JWT_SECRET
+              valueFrom:
+                configMapKeyRef:
+                  name: env-configmap
+                  key: JWT_SECRET
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: env-secret
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: env-configmap
+                  key: POSTGRES_DB
+            - name: POSTGRES_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: env-configmap
+                  key: POSTGRES_HOST
+            - name: POSTGRES_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: env-secret
+                  key: POSTGRES_USERNAME
+            - name: ACI
+              value: "ASIASNMMG5E57JSXE3EP"
+            - name: SAK
+              value: "kaHARotmdjTbRaa7lqcEQgtUaL47TJHLlDinqsZl"
+            - name: ST
+              value: "FwoGZXIvYXdzEDQaDLBeqpyE8U7GlA+05CLVAd/zfuBI0y00b85Vn+LurSMicXBk750nzWAwVJaZ6fyBoz67R4E3pxboewkB1wCqqfgkxybnvP5Ux5ZndTpdCQyeHIE7FQFIVy4Uf95r5PO5Zv7OKX+bfm1RVfgwRZe3RfRtMqbIvMIL9XmPmuhPYG9rdOJNuyamrE4zu588iDuIAwZiQ+2ayDuxsnmBoX0r4W4R6p2O4DnRHE4PiTowSQwXg2aBYqC7bRTdIlynFKH6hhq9+Vb501pVEO8MBuC9l9K0m5yGTAaJ3A661wJpmQ4torUGNij0ppqfBjItsDLI8GO+0e6gkE/4ikPMUZjQSFOq81qLv++aiFhetoqfrAvvOBEmrS1MJ1kc"
+          ports:
+            - containerPort: 8080
+      restartPolicy: Always
