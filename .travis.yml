@@ -1,0 +1,26 @@
+language: node_js
+node_js:
+  - 18
+
+services:
+  - docker
+
+install:
+  - echo "no pre-installs"
+
+before_script:
+  - echo "no tests to run"
+
+script:
+  - docker-compose -f docker-compose.yml build --parallel
+  - docker tag udagram-frontend:bcupdated epsilon1/front:bcupdated
+  - docker tag udagram-api-feed:latest epsilon1/feed:latest
+  - docker tag udagram-api-user:latest epsilon1/users:latest
+  - docker tag reverseproxy:latest epsilon1/reverseproxy:latest
+
+after_success:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker push epsilon1/front:bcupdated
+  - docker push epsilon1/feed:latest
+  - docker push epsilon1/users:latest
+  - docker push epsilon1/reverseproxy:latest
